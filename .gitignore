@@ -1,0 +1,25 @@
+
+# Lazarus
+*.exe
+*.ppu
+*.o
+*.compiled
+*.lps
+*.bak
+*~
+backup/
+lib/
+
+# SQLite lokalne baze
+*.db
+*.sqlite
+*.sqlite3
+*.db-wal
+*.db-shm
+*.db-journal
+
+# Lokalna biblioteka
+sqlite3.dll
+
+# Osjetljive datoteke
+.env
