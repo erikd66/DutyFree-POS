@@ -1,0 +1,152 @@
+object Form6: TForm6
+  Left = 125
+  Height = 720
+  Top = 116
+  Width = 1050
+  Caption = 'DutyFree POS - DFC novcanici i bonovi'
+  ClientHeight = 720
+  ClientWidth = 1050
+  DesignTimePPI = 120
+  Position = poScreenCenter
+  LCLVersion = '4.8.0.0'
+  object PageControlDFC: TPageControl
+    Left = 0
+    Height = 590
+    Top = 0
+    Width = 1050
+    ActivePage = tabBonovi
+    Align = alTop
+    TabIndex = 1
+    TabOrder = 0
+    object tabNovcanici: TTabSheet
+      Caption = 'Novcanici'
+      ClientHeight = 557
+      ClientWidth = 1042
+      object DBGridNovcanici: TDBGrid
+        Left = 8
+        Height = 264
+        Top = 8
+        Width = 1272
+        Color = clWindow
+        Columns = <>
+        DataSource = DataSourceNovcanici
+        Options = [dgEditing, dgTitles, dgIndicator, dgColumnResize, dgColumnMove, dgColLines, dgRowLines, dgTabs, dgAlwaysShowSelection, dgConfirmDelete, dgCancelOnExit, dgDisplayMemoText]
+        ReadOnly = True
+        TabOrder = 0
+      end
+      object DBGridTransakcije: TDBGrid
+        Left = 8
+        Height = 264
+        Top = 288
+        Width = 1272
+        Color = clWindow
+        Columns = <>
+        DataSource = DataSourceTransakcije
+        Options = [dgEditing, dgTitles, dgIndicator, dgColumnResize, dgColumnMove, dgColLines, dgRowLines, dgTabs, dgAlwaysShowSelection, dgConfirmDelete, dgCancelOnExit, dgDisplayMemoText]
+        ReadOnly = True
+        TabOrder = 1
+      end
+    end
+    object tabBonovi: TTabSheet
+      Caption = 'Bonovi'
+      ClientHeight = 557
+      ClientWidth = 1042
+      object DBGridBonovi: TDBGrid
+        Left = 8
+        Height = 264
+        Top = 8
+        Width = 1272
+        Color = clWindow
+        Columns = <>
+        DataSource = DataSourceBonovi
+        Options = [dgEditing, dgTitles, dgIndicator, dgColumnResize, dgColumnMove, dgColLines, dgRowLines, dgTabs, dgAlwaysShowSelection, dgConfirmDelete, dgCancelOnExit, dgDisplayMemoText]
+        ReadOnly = True
+        TabOrder = 0
+      end
+      object btnIzdajBon: TButton
+        Left = 568
+        Height = 31
+        Top = 328
+        Width = 94
+        Caption = 'Izdaj bon'
+        TabOrder = 1
+        OnClick = btnIzdajBonClick
+      end
+    end
+  end
+  object btnOsvjeziDFC: TButton
+    Left = 98
+    Height = 31
+    Top = 623
+    Width = 126
+    Caption = 'Osvjezi podatke'
+    TabOrder = 1
+    OnClick = btnOsvjeziDFCClick
+  end
+  object btnZatvoriDFC: TButton
+    Left = 816
+    Height = 31
+    Top = 623
+    Width = 126
+    Caption = 'Zatvori'
+    TabOrder = 2
+    OnClick = btnZatvoriDFCClick
+  end
+  object SQLTransactionDFC: TSQLTransaction
+    Active = False
+    Database = SQLite3ConnectionDFC
+    Left = 216
+    Top = 657
+  end
+  object SQLite3ConnectionDFC: TSQLite3Connection
+    Connected = False
+    LoginPrompt = False
+    KeepConnection = False
+    Transaction = SQLTransactionDFC
+    AlwaysUseBigint = False
+    Left = 104
+    Top = 657
+  end
+  object SQLQueryNovcanici: TSQLQuery
+    FieldDefs = <>
+    Database = SQLite3ConnectionDFC
+    Transaction = SQLTransactionDFC
+    Params = <>
+    Macros = <>
+    Left = 360
+    Top = 633
+  end
+  object SQLQueryTransakcije: TSQLQuery
+    FieldDefs = <>
+    Database = SQLite3ConnectionDFC
+    Transaction = SQLTransactionDFC
+    Params = <>
+    Macros = <>
+    Left = 429
+    Top = 632
+  end
+  object SQLQueryBonovi: TSQLQuery
+    FieldDefs = <>
+    Database = SQLite3ConnectionDFC
+    Transaction = SQLTransactionDFC
+    Params = <>
+    Macros = <>
+    Left = 501
+    Top = 633
+  end
+  object DataSourceNovcanici: TDataSource
+    DataSet = SQLQueryNovcanici
+    Left = 616
+    Top = 656
+  end
+  object DataSourceTransakcije: TDataSource
+    DataSet = SQLQueryTransakcije
+    Left = 678
+    Top = 656
+  end
+  object DataSourceBonovi: TDataSource
+    DataSet = SQLQueryBonovi
+    Left = 742
+    Top = 656
+  end
+end

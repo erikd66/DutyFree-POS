@@ -1,0 +1,109 @@
+object Form1: TForm1
+  Left = 277
+  Height = 600
+  Top = 127
+  Width = 950
+  Caption = 'DutyFree POS - Administrator'
+  ClientHeight = 600
+  ClientWidth = 950
+  Color = clWhite
+  DesignTimePPI = 120
+  Position = poScreenCenter
+  LCLVersion = '4.8.0.0'
+  object lblNaslov: TLabel
+    Left = 0
+    Height = 20
+    Top = 0
+    Width = 950
+    Align = alTop
+    Caption = 'DUTYFREE POS'
+    OnClick = lblNaslovClick
+  end
+  object lblPrijava: TLabel
+    Left = 367
+    Height = 20
+    Top = 48
+    Width = 161
+    Caption = 'Administratorska prijava'
+  end
+  object lblKorisnik: TLabel
+    Left = 308
+    Height = 20
+    Top = 128
+    Width = 100
+    Caption = 'Korisničko ime:'
+  end
+  object edtKorisnik: TEdit
+    Left = 344
+    Height = 28
+    Top = 160
+    Width = 184
+    TabOrder = 0
+  end
+  object lblLozinka: TLabel
+    Left = 308
+    Height = 20
+    Top = 216
+    Width = 53
+    Caption = 'Lozinka:'
+  end
+  object edtLozinka: TEdit
+    Left = 344
+    Height = 28
+    Top = 248
+    Width = 184
+    EchoMode = emPassword
+    PasswordChar = '*'
+    TabOrder = 1
+  end
+  object btnPrijava: TButton
+    Left = 408
+    Height = 31
+    Top = 320
+    Width = 94
+    Caption = 'Prijavi se'
+    TabOrder = 2
+    OnClick = btnPrijavaClick
+  end
+  object btnProvjeriBazu: TButton
+    Left = 320
+    Height = 31
+    Top = 496
+    Width = 94
+    Caption = 'Provjeri bazu'
+    TabOrder = 3
+    OnClick = btnProvjeriBazuClick
+  end
+  object lblStatusBaze: TLabel
+    Left = 464
+    Height = 20
+    Top = 496
+    Width = 135
+    Caption = 'Baza nije provjerena'
+  end
+  object SQLite3Connection1: TSQLite3Connection
+    Connected = False
+    LoginPrompt = False
+    DatabaseName = 'C:\Users\Erik\Desktop\Aris_Projekt_Duty_Free_Shop\dutyfree.db'
+    KeepConnection = False
+    Transaction = SQLTransaction1
+    AlwaysUseBigint = False
+    Left = 48
+    Top = 416
+  end
+  object SQLTransaction1: TSQLTransaction
+    Active = False
+    Database = SQLite3Connection1
+    Left = 48
+    Top = 480
+  end
+  object SQLQuery1: TSQLQuery
+    FieldDefs = <>
+    Database = SQLite3Connection1
+    Transaction = SQLTransaction1
+    Params = <>
+    Macros = <>
+    Left = 48
+    Top = 544
+  end
+end
