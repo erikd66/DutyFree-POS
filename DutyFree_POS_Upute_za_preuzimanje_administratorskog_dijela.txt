@@ -1,0 +1,240 @@
+﻿DUTYFREE POS – UPUTE ZA PREUZIMANJE I POKRETANJE ADMINISTRATORSKOG DIJELA
+==============================================================================
+Studentski projekt | Lazarus / Free Pascal / SQLite
+Verzija uputa: 1.0 | Datum: 25. 11. 2026.
+Repozitorij: https://github.com/erikd66/DutyFree-POS
+
+NAMJENA OVOG DOKUMENTA
+----------------------
+Ovaj dokument objašnjava kako na drugom računalu preuzeti, otvoriti,
+kompajlirati i pokrenuti administratorski dio aplikacije DutyFree POS.
+Namijenjen je kolegi ili nastavniku koji želi otvoriti izvorni projekt u
+Lazarusu, a ne samo pregledati kod na GitHubu.
+
+VAŽNO: Nije provjeren stvarni popis datoteka trenutačno objavljenih u
+GitHub repozitoriju. Zbog toga su u nastavku navedene potrebne datoteke;
+ako neka od njih nedostaje, treba je pribaviti od autora projekta.
+
+1. POTREBNI PROGRAMI I SUSTAV
+----------------------------
+- Windows 11, 64-bit (x64).
+- Lazarus IDE 4.8 s Free Pascal Compilerom (FPC) 3.2.2.
+- 64-bit SQLite biblioteka sqlite3.dll, uz izvršnu datoteku programa.
+- DB Browser for SQLite je opcionalan; služi za pregled i provjeru baze.
+- Git i GitHub Desktop NISU obavezni ako se projekt preuzima kao ZIP.
+- Internet je potreban samo za preuzimanje; rad aplikacije je offline.
+
+Službene adrese:
+  Lazarus:   https://www.lazarus-ide.org/
+  SQLite:    https://sqlite.org/download.html
+  DB Browser: https://sqlitebrowser.org/
+
+2. PREUZIMANJE S GITHUBA
+------------------------
+1) Otvoriti https://github.com/erikd66/DutyFree-POS .
+2) Na stranici repozitorija kliknuti zeleni gumb "Code".
+3) Odabrati "Download ZIP".
+4) U Windows Exploreru na preuzetom ZIP-u odabrati "Extract All" / 
+   "Izdvoji sve".
+5) Raspakirani projekt smjestiti u lokalnu mapu, primjerice:
+     C:\DutyFreePOS\
+6) Ne otvarati .lpi i ne pokretati projekt izravno unutar ZIP arhive.
+
+Napomena: Download ZIP donosi trenutno objavljene datoteke, ali ne i cijelu
+Git povijest. Za običan pregled i pokretanje projekta to je dovoljno.
+Ako je repozitorij privatan, potrebno je imati odobren pristup.
+
+3. PROVJERA PREUZETIH DATOTEKA
+-----------------------------
+Za rad u Lazarusu trebaju postojati:
+- DutyFreePOS.lpi                glavna projektna konfiguracija
+- DutyFreePOS.lpr                glavna Pascal projektna datoteka
+- uPrijava.pas i uPrijava.lfm   administratorska prijava (Form1)
+- uAdmin.pas i uAdmin.lfm       administratorski dashboard (Form2)
+- uArtikli.pas i uArtikli.lfm   upravljanje artiklima (Form3)
+- uZalihe.pas i uZalihe.lfm     zalihe i narudžbe (Form4)
+- uLetoviPutnici.pas/.lfm      letovi, putnici i avionske karte (Form5)
+- uDFC.pas i uDFC.lfm           DFC novčanici i bonovi (Form6)
+- uRacuni.pas i uRacuni.lfm     računi i izvještaji (Form7)
+- dodatne .ico/.res datoteke na koje se projekt poziva
+- sqlite3.dll                   OBAVEZNO x64 izdanje
+- dutyfree.db                   lokalna demonstracijska SQLite baza
+
+Nazivi velikih i malih slova ne smetaju na Windowsu. Stvarna imena datoteka
+mogu se neznatno razlikovati; provjeriti popis u samom Lazarus projektu.
+
+Za preuzetu verziju projekta zadržati postojeći raspored datoteka iz
+repozitorija. NE premještati proizvoljno .pas, .lfm, .lpi i .lpr datoteke:
+Lazarus pamti putanje do jedinica i formi.
+
+Mape lib, backup te privremene datoteke .ppu, .o, .lps i stare .exe datoteke
+nisu nužne za kompilaciju izvornog projekta.
+
+4. LOKALNA BAZA dutyfree.db
+--------------------------
+Aplikacija koristi JEDNU lokalnu datoteku baze naziva dutyfree.db.
+
+Ako dutyfree.db postoji među preuzetim datotekama:
+- Provjeriti da je riječ o demonstracijskoj, a ne privatnoj/produkcijskoj bazi.
+- Radi jednostavnosti, staviti je u istu projektnu mapu u kojoj se očekuje
+  prema trenutačnoj postavci DatabaseName (u originalnoj organizaciji
+  projekta to je glavna mapa).
+
+Ako dutyfree.db NIJE objavljena na GitHubu:
+- Zatražiti od autora projekta zasebnu, provjerenu demonstracijsku kopiju.
+- Ne pokretati projekt s nasumično stvorenom praznom .db datotekom.
+- Stari SQL izvozi mogu imati samo prvotnih 10 tablica, a aktualna aplikacija
+  koristi 16 tablica. Sami po sebi zato ne moraju biti dovoljni.
+
+Prije testiranja i uređivanja baze napraviti vlastitu sigurnosnu kopiju.
+
+5. POSTAVLJANJE SQLITE DLL-a I PUTANJE BAZE
+------------------------------------------
+- sqlite3.dll mora biti 64-bitna Windows x64 biblioteka.
+- sqlite3.dll mora biti U ISTOJ MAPI kao DutyFreePOS.exe koji se stvarno
+  pokreće. Ako Lazarus generira .exe u projektnoj mapi, DLL ide tamo.
+- Ne koristiti ARM64 ili 32-bitnu verziju DLL-a.
+- Datoteka sqlite3.def nije zamjena za sqlite3.dll i nije potrebna za
+  svakodnevno pokretanje aplikacije.
+
+VAŽNO: Na izvornom razvojnom računalu možda je spremljena apsolutna putanja
+baze, npr. C:\Users\...\Aris_Projekt_Duty_Free_Shop\dutyfree.db.
+Ta putanja na drugom računalu neće postojati.
+
+Postupak za ispravljanje:
+1) Otvoriti projekt u Lazarusu.
+2) Otvoriti Form1 / uPrijava.pas.
+3) Odabrati komponentu SQLite3Connection1.
+4) U Object Inspectoru postaviti DatabaseName na PUNU lokalnu putanju do
+   raspakirane demonstracijske baze, primjerice C:\DutyFreePOS\dutyfree.db.
+5) Provjeriti sadrži li kod prijave ili provjere baze neku naredbu
+   SQLite3Connection1.DatabaseName := '...'; koja bi prepisala postavku.
+   Ako postoji, i tu putanju prilagoditi lokalnoj lokaciji baze.
+6) Spremiti promjene (File > Save All).
+
+Nije potrebno ručno unositi putanju na svaku administratorsku formu:
+Form2 i ostali prozori primaju putanju baze iz postojećeg povezivanja.
+
+6. OTVARANJE I KOMPILIRANJE U LAZARUSU
+-------------------------------------
+1) Pokrenuti Lazarus IDE 4.8.
+2) Odabrati Project > Open Project i otvoriti DutyFreePOS.lpi.
+3) Ako Lazarus prijavi nedostajuće jedinice, provjeriti jesu li svi .pas i
+   odgovarajući .lfm parovi preuzeti i ostali na očekivanim lokacijama.
+4) Otvoriti Project > Project Options > Forms i provjeriti postavke:
+     Form1 / prijava  = Auto-create form
+     Form2 do Form7  = Available forms (stvaraju se iz koda)
+5) Provjeriti da su putanja do baze i sqlite3.dll ispravni.
+6) Odabrati Run > Build ili pokrenuti F9 za kompiliranje i pokretanje.
+7) Ako Windows drži stari .exe otvorenim, najprije zatvoriti aplikaciju
+   i ponoviti Build.
+
+Za samostalni rad na kodu ne treba instalirati DB Browser, ali je koristan
+za pregled tablica i provjeru spremljenih rezultata.
+
+7. PRIJAVA I PROVJERA RADA
+-------------------------
+U demonstracijskoj razvojnoj bazi, prema trenutačnom studentskom dogovoru:
+    Korisničko ime: admin
+    Lozinka:         admin123
+
+Ovi podaci vrijede SAMO ako je preuzeta upravo pripremljena demonstracijska
+baza s tim korisnikom. Nisu univerzalni za svaku kopiju baze.
+Demo lozinka pohranjena je običnim tekstom i NIJE sigurna za stvarnu primjenu.
+Ne koristiti iste podatke za osobne ili stvarne korisničke račune.
+
+Nakon prijave provjeriti:
+- Dashboard: učitavaju se broj putnika, letova, aktivnih artikala i niske zalihe.
+- Artikli: otvara se popis artikala.
+- Zalihe: vide se količine, moguće je naručiti i zaprimiti testnu robu.
+- Letovi i putnici: učitavaju se letovi, putnici i njihove karte.
+- DFC: pregledavaju se salda, transakcije i izdani bonovi.
+- Računi: prikazuju se računi i osnovna statistika ako je kupnja provedena.
+
+Ako je tablica računa prazna, to može biti normalno: računi nastaju tek nakon
+uspješne kupnje u kupčevom dijelu aplikacije.
+
+8. AKO SE ADMINISTRATORSKI DIO SPAJA S KUPČEVIM DIJELOM
+--------------------------------------------------------
+- Administrator i kupac moraju koristiti ISTU aktualnu shemu baze dutyfree.db.
+- Kupčevo sučelje koristi barkod aktivne avionske karte za prijavu kupca.
+- Bonovi koje izdaje administrator pohranjuju se u tablicu vauceri;
+  kupčev dio pri iskorištavanju nadopunjava novčanik i bilježi transakciju.
+- Kupčeva kupnja stvara racuni/stavke_racuna, smanjuje zalihe i saldo u
+  jednoj transakciji. Administratorski izvještaji tada vide nove račune.
+- Ne prepisivati noviju bazu starijom kopijom samo radi spajanja sučelja.
+- Ne kopirati naslijepo dvije različite DutyFreePOS.lpr/.lpi datoteke
+  jednu preko druge. Ako dva člana rade zasebno, treba dogovoriti koje su
+  glavne projektne jedinice i upisati nove forme u zajednički projekt.
+- Ako oba dijela trenutno imaju vlastite lokalne baze, promjene se ne
+  sinkroniziraju same. Uskladiti jednu aktualnu demonstracijsku bazu.
+- Prije spajanja ili SQL migracija napraviti backup.
+
+9. ČESTE POGREŠKE
+-----------------
+"no such table: administratori" ili "no such table: putnici"
+  -> Otvorena je pogrešna ili nepotpuna baza. Provjeriti DatabaseName i
+     koristiti aktualnu dutyfree.db s 16 tablica.
+
+"Unable to load sqlite3.dll" / pogreška pokretanja SQLitea
+  -> Nedostaje DLL ili je pogrešna arhitektura (npr. ARM64 umjesto x64).
+     Provjeriti da je ispravan sqlite3.dll uz stvarni DutyFreePOS.exe.
+
+"Unable to open database file"
+  -> Neispravna lokalna putanja, datoteka nedostaje ili nema prava pisanja.
+
+"Illegal unit name" / "Can't find unit" / "Can't find form"
+  -> Nepodudaranje imena jedinice, nedostajuća .pas/.lfm datoteka ili
+     promijenjen raspored mapa. Provjeriti projektne putanje.
+
+"Database is locked"
+  -> Zatvoriti dodatne programe koji možda uređuju bazu, uključujući
+     otvorene transakcije u DB Browseru. Ponoviti postupak.
+
+"no such savepoint: UNDOPOINT" u DB Browseru
+  -> Ne upisivati ručno BEGIN, COMMIT, SAVEPOINT ili ROLLBACK pri običnom
+     uređivanju kroz DB Browser jer ima vlastiti način spremanja promjena.
+
+"Program se kompajlira, ali prikazuje stare podatke"
+  -> Provjeriti da nije otvorena druga kopija baze i da se pokreće
+     najnoviji kompajlirani .exe.
+
+10. OPCIONALNE PROVJERE U DB BROWSERU
+------------------------------------
+Za provjeru ispravne baze izvršiti pojedinačno:
+
+  PRAGMA integrity_check;       -- očekivano: ok
+  PRAGMA foreign_key_check;     -- očekivano: nema redaka
+
+  SELECT COUNT(*) AS broj_tablica
+  FROM sqlite_master
+  WHERE type = 'table' AND name NOT LIKE 'sqlite_%';
+  -- očekivano: 16 tablica za aktualnu verziju sheme
+
+  SELECT korisnicko_ime, aktivan FROM administratori;
+
+Ove naredbe samo čitaju podatke. Ne mijenjaju bazu.
+
+11. BRZA KONTROLNA LISTA
+------------------------
+[ ] Preuzet i potpuno raspakiran GitHub ZIP
+[ ] Instaliran Lazarus 4.8 / FPC 3.2.2 x64
+[ ] Postoje DutyFreePOS.lpi i DutyFreePOS.lpr
+[ ] Postoje sve potrebne .pas i .lfm datoteke
+[ ] Nabavljena ispravna demonstracijska dutyfree.db
+[ ] Baza ima aktualnu shemu od 16 tablica
+[ ] Ispravljen SQLite3Connection1.DatabaseName za lokalno računalo
+[ ] Uz .exe se nalazi ispravni Windows x64 sqlite3.dll
+[ ] Projekt se uspješno kompajlira i pokreće
+[ ] Administratorska prijava radi
+[ ] Dashboard i svi administratorski moduli otvaraju se bez pogrešaka
+
+NAPOMENA ZA AUTORA REPOZITORIJA
+------------------------------
+Prije dijeljenja poveznice provjeriti da su na GitHub preneseni cijeli izvorni
+projekt i njegove .lfm forme, te da je kolegi jasno odakle dobiti demonstracijsku
+bazu. Ako je repozitorij javan, u bazu ne stavljati stvarne osobne podatke,
+privatne lozinke ni druge osjetljive podatke. Razvojna lozinka admin123
+služi isključivo kao javno poznat testni primjer, ne kao sigurnosna zaštita.
+
+KRAJ DOKUMENTA
